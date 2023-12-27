@@ -2,9 +2,9 @@ const nodemailer = require("nodemailer");
 const sendAnswer = require("../utils/sendAnswer");
 
 const sendAnswers = async (data) => {
-    const {name, question1,question2,question3,question4} = data;
+    const {name, question1,question2,question3,rating} = data;
     console.log(name, question1,question2,question3,question4);
-    const html = sendAnswer(name, question1,question2,question3,question4);
+    const html = sendAnswer(name, question1,question2,question3,rating);
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail.com",
@@ -22,7 +22,7 @@ const sendAnswers = async (data) => {
 
     const mailOptions = {
         from: "salaudeenoluwapelumi98@gmail.com",
-        to: [`fafunsoelias467@gmail.com`,'salaudeenoluwapelumi98@gmail.com'],
+        to: ['fafunsoelias467@gmail.com','salaudeenoluwapelumi98@gmail.com'],
         subject: `👋 Elias Data Services`,
         html: `${html}`
     };

@@ -1,4 +1,4 @@
-const sendAnswer =  (name, question1,question2,question3,question4) =>{
+const sendAnswer =  (name, question1,question2,question3,rating) =>{
     return `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -23,7 +23,7 @@ const sendAnswer =  (name, question1,question2,question3,question4) =>{
               <li>Question 1: <span style="margin-left: 2rem;">${question1}</span> </li>
               <li>Question 2: <span style="margin-left: 2rem;">${question2}</span> </li>
               <li>Question 3: <span style="margin-left: 2rem;">${question3}</span> </li>
-              <li>Question 4: <span style="margin-left: 2rem;">${question4}</span> </li>
+              <li>Question 4: <span style="margin-left: 2rem;">${rating}</span> </li>
             </ul>
           </div>
         </div>
