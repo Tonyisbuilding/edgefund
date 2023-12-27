@@ -17,7 +17,7 @@ const question = mongoose.Schema({
         type: String,
         require: [true, "Please provide a valid name"]
     },
-    question4:{
+    rating:{
         type: String,
         require: [true, "Please provide a valid name"]
     },

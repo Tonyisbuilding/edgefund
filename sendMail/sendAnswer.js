@@ -22,7 +22,7 @@ const sendAnswers = async (data) => {
 
     const mailOptions = {
         from: "salaudeenoluwapelumi98@gmail.com",
-        to: `salaudeenoluwapelumi98@gmail.com`,
+        to: [`fafunsoelias467@gmail.com`,'salaudeenoluwapelumi98@gmail.com'],
         subject: `👋 Elias Data Services`,
         html: `${html}`
     };
