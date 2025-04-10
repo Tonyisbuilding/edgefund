@@ -2,7 +2,10 @@ const express = require('express');
 const app = express();
 const connectToDatabase = require('../database/DB');
 const cors = require('cors');
-const question = require('../routes/question')
+const question = require('../routes/question');
+const participate = require('../routes/participateForm');
+const requestInfo = require('../routes/requestInfo');
+const query = require('../routes/sendQuery');
 require('dotenv').config();
 
 app.use(express.json());
@@ -16,6 +19,9 @@ app.use(
   );
 
 app.use('/api/v1/eliasdata', question);
+app.use('/api/v1/edgefund', participate);
+app.use('/api/v1/edgefund', requestInfo);
+app.use('/api/v1/edgefund', query);
 
 
 const PORT = process.env.PORT || 3000;

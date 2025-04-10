@@ -3,7 +3,6 @@ const sendAnswer = require("../utils/sendAnswer");
 
 const sendAnswers = async (data) => {
     const {name, question1,question2,question3,rating} = data;
-    console.log(name, question1,question2,question3,question4);
     const html = sendAnswer(name, question1,question2,question3,rating);
   try {
     const transporter = nodemailer.createTransport({
