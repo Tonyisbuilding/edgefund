@@ -10,13 +10,6 @@ require('dotenv').config();
 
 app.use(express.json());
 
-//cors policy
-app.use(
-    cors({
-      origin:"*",
-      methods: ["GET","POST","PATCH","DELETE",],
-    })
-  );
 
 app.use('/api/v1/eliasdata', question);
 app.use('/api/v1/edgefund', participate);
@@ -24,6 +17,14 @@ app.use('/api/v1/edgefund', requestInfo);
 app.use('/api/v1/edgefund', query);
 
 
+//cors policy
+app.use(
+    cors({
+      origin:"*",
+      methods: ["GET","POST","PATCH","DELETE",],
+    })
+  );
+  
 const PORT = process.env.PORT || 3000;
 const start = async ()=>{
     try {
