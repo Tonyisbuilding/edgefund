@@ -42,4 +42,4 @@ const participateFormSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('participatefor', participateFormSchema);
+module.exports = mongoose.model('participateForm', participateFormSchema);
