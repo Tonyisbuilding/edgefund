@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 
 // utils/sendRequestInfoEmail.js
 const sendRequestInfoEmail = async (data) => {
-    const { firstName, lastName, mail, number, whatwouldyouliketoreceiveinformationabout, message } = data;
+    const { firstName, lastName, email, phone, preference, message,newsletter } = data;
 
     const html = `
     <!DOCTYPE html>
@@ -20,9 +20,10 @@ const sendRequestInfoEmail = async (data) => {
             <ul>
               <li><strong>First Name:</strong> ${firstName}</li>
               <li><strong>Last Name:</strong> ${lastName}</li>
-              <li><strong>Email:</strong> ${mail}</li>
-              <li><strong>Phone Number:</strong> ${number}</li>
-              <li><strong>Interested In:</strong> ${whatwouldyouliketoreceiveinformationabout}</li>
+              <li><strong>Email:</strong> ${email}</li>
+              <li><strong>Phone Number:</strong> ${phone}</li>
+              <li><strong>Interested In:</strong> ${preference}</li>
+              <li><strong>News letter:</strong> ${newsletter}</li>
               <li><strong>Message:</strong><br/>${message}</li>
             </ul>
           </div>
@@ -48,7 +49,7 @@ const sendRequestInfoEmail = async (data) => {
     const mailOptions = {
       from: "salaudeenoluwapelumi98@gmail.com",
       to: ["salaudeenoluwapelumi98@gmail.com"],
-      subject: `📩 Query Submission from ${name}`,
+      subject: `📩 Query Submission from ${firstName}`,
       html,
     };
 

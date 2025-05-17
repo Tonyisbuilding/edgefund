@@ -7,33 +7,35 @@ const requestInfoForm = async (req, res) => {
     const {
       firstName,
       lastName,
-      mail,
-      number,
-      whatwouldyouliketoreceiveinformationabout,
-      message
+      email,
+      phone,
+      preference,
+      message,
+      newsletter
     } = req.body;
 
     // Validate required fields
     if (
       !firstName ||
       !lastName ||
-      !mail ||
-      !number ||
-      !whatwouldyouliketoreceiveinformationabout ||
-      !message
+      !email ||
+      !phone ||
+      !preference ||
+      !message ||
+      !newsletter
     ) {
       return res.status(400).json({ error: 'Please fill in all required fields' });
     }
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(mail)) {
+    if (!emailRegex.test(email)) {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
     // Validate phone number
     const phoneRegex = /^\+?\d{7,15}$/;
-    if (!phoneRegex.test(number)) {
+    if (!phoneRegex.test(phone)) {
       return res.status(400).json({ error: 'Invalid phone number format' });
     }
 
@@ -41,17 +43,18 @@ const requestInfoForm = async (req, res) => {
     const sanitizedData = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
-      mail: mail.trim().toLowerCase(),
-      number: number.trim(),
-      whatwouldyouliketoreceiveinformationabout: whatwouldyouliketoreceiveinformationabout.trim(),
-      message: message.trim()
+      email: email.trim().toLowerCase(),
+      phone: phone.trim(),
+      preference: preference.trim(),
+      message: message.trim(),
+      newsletter: newsletter,
     };
 
     // Save to MongoDB
     // const newRequest = new RequestInfo(sanitizedData);
     // await newRequest.save();
 
-    sendRequestInfoEmail(req.body);
+    sendRequestInfoEmail(sanitizedData);
     return res.status(201).json({ message: 'Information request submitted successfully' });
 
   } catch (error) {

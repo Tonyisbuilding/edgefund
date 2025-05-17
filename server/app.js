@@ -6,6 +6,7 @@ const question = require('../routes/question');
 const participate = require('../routes/participateForm');
 const requestInfo = require('../routes/requestInfo');
 const query = require('../routes/sendQuery');
+const contactUs = require('../routes/contactUs');
 require('dotenv').config();
 
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use('/api/v1/eliasdata', question);
 app.use('/api/v1/edgefund', participate);
 app.use('/api/v1/edgefund', requestInfo);
 app.use('/api/v1/edgefund', query);
+app.use('/api/v1/edgefund', contactUs);
 
 
 
@@ -29,7 +31,7 @@ const PORT = process.env.PORT || 3000;
 const start = async ()=>{
     try {
         app.listen(PORT, console.log('Server is running at port '+ PORT));
-        connectToDatabase(process.env.MONGO_URI);
+        // connectToDatabase(process.env.MONGO_URI);
     } catch (error) {
         
     }
