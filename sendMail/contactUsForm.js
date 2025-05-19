@@ -17,25 +17,21 @@ const sendQueryMail = async (data) => {
 
   try {
     const transporter = nodemailer.createTransport({
-        service: "gmail",
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
+       service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "salaudeenoluwapelumi98@gmail.com",
+        pass: "xqesplvduzdmmrsl",
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     const mailOptions = {
-    //   from: "salaudeenoluwapelumi98@gmail.com",
-    //   to: ["salaudeenoluwapelumi98@gmail.com"],
-    //   subject: `📩 A New message from ${firstName}`,
-    //   html,
-    from: `"Edge Capital Forms" <${process.env.EMAIL_FROM}>`,
+    from: `salaudeenoluwapelumi98@gmail.com`,
     to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
     subject: `📥 New Form Submission from ${firstName}`,
     html,
