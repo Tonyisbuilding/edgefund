@@ -129,18 +129,29 @@ const sendParticipateEmail = async (data) => {
   `;
 
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
+    // host: process.env.SMTP_HOST,
+    // port: Number(process.env.SMTP_PORT),
+    // secure: false,
+    // auth: {
+    //   user: process.env.SMTP_USER,
+    //   pass: process.env.SMTP_PASS,
+    // },
+    service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "salaudeenoluwapelumi98@gmail.com",
+        pass: "xqesplvduzdmmrsl",
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
   });
 
   const mailOptions = {
-    from: `"Edge Capital Forms" <${process.env.EMAIL_FROM}>`,
-    to: process.env.EMAIL_TO,
+    from: `salaudeenoluwapelumi98@gmail.com`,
+    to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
     subject: `📥 New Form Submission from ${name}`,
     html,
   };
