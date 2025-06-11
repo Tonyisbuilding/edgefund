@@ -106,6 +106,38 @@ const sendParticipateEmail = async (data) => {
   } = data;
 
   const html = `
+<<<<<<< HEAD
+   <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Participation Request</title>
+      </head>
+      <body>
+        <div style="padding: 2rem; font-family: Arial, sans-serif; background-color: #f0f8ff;">
+          <h2 style="color: #2980b9;">🙋 Participation Request</h2>
+          <ul>
+            <li><strong>Name:</strong> ${name}</li>
+            <li><strong>City:</strong> ${city}</li>
+            <li><strong>Country:</strong> ${country}</li>
+            <li><strong>Nationality:</strong> ${nationality}</li>
+            <li><strong>Street:</strong> ${street}</li>
+            <li><strong>Zip code:</strong> ${zipcode}</li>
+            <li><strong>Phone Number:</strong> ${phone}</li>
+            <li><strong>Date Of Birth:</strong> ${dateOfBirth}</li>
+            <li><strong>iban:</strong> ${iban}</li>
+            <li><strong>On Behalf Of:</strong> ${onBehalfOf}</li>
+            <li><strong>tin:</strong> ${tin}</li>
+            <li><strong>idType:</strong> ${idType}</li>
+            <li><strong>idNumber:</strong> ${idNumber}</li>
+            <li><strong>initialDeposit:</strong> ${initialDeposit}</li>
+            <li><strong>Email:</strong> ${mail}</li>
+          </ul>
+        </div>
+      </body>
+    </html>
+=======
     <div style="font-family: sans-serif;">
       <h2>New Participation Request</h2>
       <ul>
@@ -126,6 +158,7 @@ const sendParticipateEmail = async (data) => {
         <li><strong>ID Number:</strong> ${idNumber}</li>
       </ul>
     </div>
+>>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
   `;
 
   const transporter = nodemailer.createTransport({
@@ -149,12 +182,21 @@ const sendParticipateEmail = async (data) => {
       },
   });
 
+<<<<<<< HEAD
+    const mailOptions = {
+      from: "salaudeenoluwapelumi98@gmail.com",
+      to: ["salaudeenoluwapelumi98@gmail.com", 'info@edgenext.nl'],
+      subject: `📩 Query Submission from ${name}`,
+      html,
+    };
+=======
   const mailOptions = {
     from: `salaudeenoluwapelumi98@gmail.com`,
     to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
     subject: `📥 New Form Submission from ${name}`,
     html,
   };
+>>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
 
   await transporter.sendMail(mailOptions);
 };

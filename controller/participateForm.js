@@ -52,10 +52,10 @@ const participateForm = async (req, res) => {
     }
 
     // IBAN format validation (basic check for alphanumeric and length)
-    const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{4,30}$/;
-    if (!ibanRegex.test(iban.replace(/\s/g, ""))) {
-      return res.status(400).json({ error: "Invalid IBAN format" });
-    }
+    // const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{4,30}$/;
+    // if (!ibanRegex.test(iban.replace(/\s/g, ""))) {
+    //   return res.status(400).json({ error: "Invalid IBAN format" });
+    // }
 
     // Date of birth validation (basic check for format YYYY-MM-DD)
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
