@@ -182,21 +182,12 @@ const sendParticipateEmail = async (data) => {
       },
   });
 
-<<<<<<< HEAD
     const mailOptions = {
       from: "salaudeenoluwapelumi98@gmail.com",
       to: ["salaudeenoluwapelumi98@gmail.com", 'info@edgenext.nl'],
       subject: `📩 Query Submission from ${name}`,
       html,
     };
-=======
-  const mailOptions = {
-    from: `salaudeenoluwapelumi98@gmail.com`,
-    to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
-    subject: `📥 New Form Submission from ${name}`,
-    html,
-  };
->>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
 
   await transporter.sendMail(mailOptions);
 };

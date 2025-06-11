@@ -48,11 +48,7 @@ const sendRequestInfoEmail = async (data) => {
 
     const mailOptions = {
       from: "salaudeenoluwapelumi98@gmail.com",
-<<<<<<< HEAD
       to: ["salaudeenoluwapelumi98@gmail.com", "info@edgenext.nl"],
-=======
-      to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
->>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
       subject: `📩 Query Submission from ${firstName}`,
       html,
     };
