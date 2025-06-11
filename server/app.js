@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 3000;
 const start = async ()=>{
     try {
         app.listen(PORT, console.log('Server is running at port '+ PORT));
-        connectToDatabase(process.env.MONGO_URI);
+        // connectToDatabase(process.env.MONGO_URI);
     } catch (error) {
         
     }

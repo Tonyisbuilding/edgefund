@@ -2,7 +2,23 @@
 const nodemailer = require("nodemailer");
 
 const sendParticipateEmail = async (data) => {
-    const { name, address, zip, city, country, nationality, number, mail } = data;
+  const {
+    name,
+    street,
+    zipcode,
+    city,
+    country,
+    nationality,
+    phone,
+    mail,
+    iban,
+    onBehalfOf,
+    tin,
+    idType,
+    idNumber,
+    dateOfBirth,
+    initialDeposit,
+  } = data;
 
   const html = `
    <!DOCTYPE html>
@@ -17,12 +33,19 @@ const sendParticipateEmail = async (data) => {
           <h2 style="color: #2980b9;">🙋 Participation Request</h2>
           <ul>
             <li><strong>Name:</strong> ${name}</li>
-            <li><strong>Address:</strong> ${address}</li>
-            <li><strong>Zip Code:</strong> ${zip || 'N/A'}</li>
             <li><strong>City:</strong> ${city}</li>
             <li><strong>Country:</strong> ${country}</li>
             <li><strong>Nationality:</strong> ${nationality}</li>
-            <li><strong>Phone Number:</strong> ${number}</li>
+            <li><strong>Street:</strong> ${street}</li>
+            <li><strong>Zip code:</strong> ${zipcode}</li>
+            <li><strong>Phone Number:</strong> ${phone}</li>
+            <li><strong>Date Of Birth:</strong> ${dateOfBirth}</li>
+            <li><strong>iban:</strong> ${iban}</li>
+            <li><strong>On Behalf Of:</strong> ${onBehalfOf}</li>
+            <li><strong>tin:</strong> ${tin}</li>
+            <li><strong>idType:</strong> ${idType}</li>
+            <li><strong>idNumber:</strong> ${idNumber}</li>
+            <li><strong>initialDeposit:</strong> ${initialDeposit}</li>
             <li><strong>Email:</strong> ${mail}</li>
           </ul>
         </div>
@@ -47,7 +70,7 @@ const sendParticipateEmail = async (data) => {
 
     const mailOptions = {
       from: "salaudeenoluwapelumi98@gmail.com",
-      to: ["salaudeenoluwapelumi98@gmail.com"],
+      to: ["salaudeenoluwapelumi98@gmail.com", 'info@edgenext.nl'],
       subject: `📩 Query Submission from ${name}`,
       html,
     };
