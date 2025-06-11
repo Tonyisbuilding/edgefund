@@ -17,24 +17,31 @@ const sendQueryMail = async (data) => {
 
   try {
     const transporter = nodemailer.createTransport({
-       service: "gmail",
-      host: "smtp.gmail.com",
+      //  service: "gmail",
+      // host: "smtp.gmail.com",
+      // port: 587,
+      // secure: false,
+      // auth: {
+      //   user: "salaudeenoluwapelumi98@gmail.com",
+      //   pass: "xqesplvduzdmmrsl",
+      // },
+      // tls: {
+      //   rejectUnauthorized: false,
+      // },
+      host: "smtp.zeptomail.com",
       port: 587,
-      secure: false,
+      secure: false, // Use false for port 587, then STARTTLS will be negotiated
       auth: {
-        user: "salaudeenoluwapelumi98@gmail.com",
-        pass: "xqesplvduzdmmrsl",
-      },
-      tls: {
-        rejectUnauthorized: false,
+        user: "emailapikey", // Your ZeptoMail username (always 'emailapikey')
+        pass: "wSsVR60j8kXyXPx9lWX7L+8+yl5cD1KjEEgs3VGl4nOtGfDE/cc9lESfAQLxTfNLGDZvHTMXrOoqnEgC0Gda2tl/mFoCDSiF9mqRe1U4J3x17qnvhDzNX2tckBuMKo4Bzw9vnWNpG8gl+g==", // Your ZeptoMail API Key
       },
     });
 
     const mailOptions = {
-    from: `salaudeenoluwapelumi98@gmail.com`,
-    to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
-    subject: `📥 New Form Submission from ${firstName}`,
-    html,
+      from: `salaudeenoluwapelumi98@gmail.com`,
+      to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
+      subject: `📥 New Form Submission from ${firstName}`,
+      html,
     };
 
     await transporter.sendMail(mailOptions);

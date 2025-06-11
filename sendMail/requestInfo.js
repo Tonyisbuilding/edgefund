@@ -1,12 +1,12 @@
 // utils/sendQueryMail.js
 const nodemailer = require("nodemailer");
 
-
 // utils/sendRequestInfoEmail.js
 const sendRequestInfoEmail = async (data) => {
-    const { firstName, lastName, email, phone, preference, message,newsletter } = data;
+  const { firstName, lastName, email, phone, preference, message, newsletter } =
+    data;
 
-    const html = `
+  const html = `
     <!DOCTYPE html>
       <html lang="en">
         <head>
@@ -33,26 +33,29 @@ const sendRequestInfoEmail = async (data) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
+      // service: "gmail",
+      // host: "smtp.gmail.com",
+      // port: 587,
+      // secure: false,
+      // auth: {
+      //   user: "salaudeenoluwapelumi98@gmail.com",
+      //   pass: "xqesplvduzdmmrsl",
+      // },
+      // tls: {
+      //   rejectUnauthorized: false,
+      // },
+      host: "smtp.zeptomail.com",
       port: 587,
-      secure: false,
+      secure: false, // Use false for port 587, then STARTTLS will be negotiated
       auth: {
-        user: "salaudeenoluwapelumi98@gmail.com",
-        pass: "xqesplvduzdmmrsl",
-      },
-      tls: {
-        rejectUnauthorized: false,
+        user: "emailapikey", // Your ZeptoMail username (always 'emailapikey')
+        pass: "wSsVR60j8kXyXPx9lWX7L+8+yl5cD1KjEEgs3VGl4nOtGfDE/cc9lESfAQLxTfNLGDZvHTMXrOoqnEgC0Gda2tl/mFoCDSiF9mqRe1U4J3x17qnvhDzNX2tckBuMKo4Bzw9vnWNpG8gl+g==", // Your ZeptoMail API Key
       },
     });
 
     const mailOptions = {
       from: "salaudeenoluwapelumi98@gmail.com",
-<<<<<<< HEAD
       to: ["salaudeenoluwapelumi98@gmail.com", "info@edgenext.nl"],
-=======
-      to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
->>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
       subject: `📩 Query Submission from ${firstName}`,
       html,
     };
@@ -62,6 +65,6 @@ const sendRequestInfoEmail = async (data) => {
     console.error("Error sending query email:", error.message);
     throw new Error("Email failed to send.");
   }
-  };
-  
-  module.exports = sendRequestInfoEmail;
+};
+
+module.exports = sendRequestInfoEmail;
