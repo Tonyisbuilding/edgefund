@@ -83,7 +83,6 @@
 
 // module.exports = sendParticipateEmail;
 
-
 const nodemailer = require("nodemailer");
 
 const sendParticipateEmail = async (data) => {
@@ -106,7 +105,6 @@ const sendParticipateEmail = async (data) => {
   } = data;
 
   const html = `
-<<<<<<< HEAD
    <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -137,28 +135,6 @@ const sendParticipateEmail = async (data) => {
         </div>
       </body>
     </html>
-=======
-    <div style="font-family: sans-serif;">
-      <h2>New Participation Request</h2>
-      <ul>
-        <li><strong>Name:</strong> ${name}</li>
-        <li><strong>Email:</strong> ${mail}</li>
-        <li><strong>Phone:</strong> ${phone}</li>
-        <li><strong>IBAN:</strong> ${iban}</li>
-        <li><strong>Nationality:</strong> ${nationality}</li>
-        <li><strong>Country:</strong> ${country}</li>
-        <li><strong>City:</strong> ${city}</li>
-        <li><strong>Street:</strong> ${street}</li>
-        <li><strong>Zipcode:</strong> ${zipcode}</li>
-        <li><strong>Date of Birth:</strong> ${dateOfBirth}</li>
-        <li><strong>Initial Deposit:</strong> ${initialDeposit}</li>
-        <li><strong>On Behalf Of:</strong> ${onBehalfOf}</li>
-        <li><strong>TIN:</strong> ${tin}</li>
-        <li><strong>ID Type:</strong> ${idType}</li>
-        <li><strong>ID Number:</strong> ${idNumber}</li>
-      </ul>
-    </div>
->>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
   `;
 
   const transporter = nodemailer.createTransport({
@@ -169,28 +145,34 @@ const sendParticipateEmail = async (data) => {
     //   user: process.env.SMTP_USER,
     //   pass: process.env.SMTP_PASS,
     // },
-    service: "gmail",
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "salaudeenoluwapelumi98@gmail.com",
-        pass: "xqesplvduzdmmrsl",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
+    // service: "gmail",
+    //   host: "smtp.gmail.com",
+    //   port: 587,
+    //   secure: false,
+    //   auth: {
+    //     user: "salaudeenoluwapelumi98@gmail.com",
+    //     pass: "xqesplvduzdmmrsl",
+    //   },
+    //   tls: {
+    //     rejectUnauthorized: false,
+    //   },
+    host: "smtp.zeptomail.com",
+    port: 587,
+    secure: false, // Use false for port 587, then STARTTLS will be negotiated
+    auth: {
+      user: "emailapikey", // Your ZeptoMail username (always 'emailapikey')
+      pass: "wSsVR60j8kXyXPx9lWX7L+8+yl5cD1KjEEgs3VGl4nOtGfDE/cc9lESfAQLxTfNLGDZvHTMXrOoqnEgC0Gda2tl/mFoCDSiF9mqRe1U4J3x17qnvhDzNX2tckBuMKo4Bzw9vnWNpG8gl+g==", // Your ZeptoMail API Key
+    },
   });
 
-    const mailOptions = {
-      from: "salaudeenoluwapelumi98@gmail.com",
-      to: ["salaudeenoluwapelumi98@gmail.com", 'info@edgenext.nl'],
-      subject: `📩 Query Submission from ${name}`,
-      html,
-    };
+  const mailOptions = {
+    from: "salaudeenoluwapelumi98@gmail.com",
+    to: ["salaudeenoluwapelumi98@gmail.com", "info@edgenext.nl"],
+    subject: `📩 Query Submission from ${name}`,
+    html,
+  };
 
   await transporter.sendMail(mailOptions);
 };
 
 module.exports = sendParticipateEmail;
-
