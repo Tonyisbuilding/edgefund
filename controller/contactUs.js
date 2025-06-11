@@ -1,19 +1,18 @@
 // controllers/queryController.js
-const Query = require('../models/sendQueryForm');
-const sendQueryMail = require('../sendMail/sendQueryForm');
+const sendQueryMail = require('../sendMail/contactUsForm');
 
-const sendQuery = async (req, res) => {
+const contactUs = async (req, res) => {
   try {
-    const { name, mail, number, message } = req.body;
+    const { firstName, lastName, email, number, message } = req.body;
 
     // Basic validation
-    if (!name || !mail || !number || !message) {
+    if (!firstName || !lastName || !email || !number || !message) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
     // Email validation (basic)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(mail)) {
+    if (!emailRegex.test(email)) {
       return res.status(400).json({ error: 'Invalid email address' });
     }
 
@@ -25,8 +24,9 @@ const sendQuery = async (req, res) => {
 
     // Sanitize input (optional, but a good practice)
     const sanitizedData = {
-      name: name.trim(),
-      mail: mail.trim().toLowerCase(),
+      firstName: firstName.trim() ,
+      lastName: lastName.trim(),
+      mail: email.trim().toLowerCase(),
       number: number.trim(),
       message: message.trim()
     };
@@ -44,4 +44,4 @@ const sendQuery = async (req, res) => {
   }
 };
 
-module.exports = { sendQuery };
+module.exports = { contactUs };

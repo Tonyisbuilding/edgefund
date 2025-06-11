@@ -2,11 +2,12 @@
 const nodemailer = require("nodemailer");
 
 const sendQueryMail = async (data) => {
-  const { name, mail, number, message } = data;
+  const { firstName, lastName, mail, number, message } = data;
   const html = `
     <div style="font-family: Arial, sans-serif; padding: 2rem; background: #f4f4f4">
-      <h2 style="color: #2c3e50;">📨 New Query Submission</h2>
-      <p><strong>Name:</strong> ${name}</p>
+      <h2 style="color: #2c3e50;">📨 A New message from ${mail}</h2>
+      <p><strong>Name:</strong> ${firstName}</p>
+      <p><strong>Name:</strong> ${lastName}</p>
       <p><strong>Email:</strong> ${mail}</p>
       <p><strong>Mobile Number:</strong> ${number}</p>
       <p><strong>Message:</strong></p>
@@ -16,7 +17,7 @@ const sendQueryMail = async (data) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+       service: "gmail",
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
@@ -30,14 +31,10 @@ const sendQueryMail = async (data) => {
     });
 
     const mailOptions = {
-      from: "salaudeenoluwapelumi98@gmail.com",
-<<<<<<< HEAD
-      to: ["salaudeenoluwapelumi98@gmail.com", 'info@edgenext.nl'],
-=======
-      to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
->>>>>>> 472ed8a530c5a31190e5cb56c1980f00d1ff6eb3
-      subject: `📩 Query Submission from ${name}`,
-      html,
+    from: `salaudeenoluwapelumi98@gmail.com`,
+    to: [process.env.EMAIL_TO, "salaudeenoluwapelumi98@gmail.com"],
+    subject: `📥 New Form Submission from ${firstName}`,
+    html,
     };
 
     await transporter.sendMail(mailOptions);
