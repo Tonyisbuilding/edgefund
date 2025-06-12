@@ -7,6 +7,6 @@ const {
 
  router.use(express.json());
  
- router.post('/requestinfo/edge', requestInfoForm);
+ router.post('/requestinfo', requestInfoForm);
  
  module.exports = router;
