@@ -25,10 +25,10 @@ app.use('/api/v1/edgefund', participate);
 app.use('/api/v1/edgefund', requestInfo);
 app.use('/api/v1/edgefund', query);
 app.use('/api/v1/edgefund', contactUs);
-// app.use('/api/v1/edgeCapital', participateEdge);
-// app.use('/api/v1/edgeCapital', requestInfoEdge);
-// app.use('/api/v1/edgeCapital', queryEdge);
-// app.use('/api/v1/edgeCapital', contactUsEdge);
+app.use('/api/v1/edgeCapital', participateEdge);
+app.use('/api/v1/edgeCapital', requestInfoEdge);
+app.use('/api/v1/edgeCapital', queryEdge);
+app.use('/api/v1/edgeCapital', contactUsEdge);
 
 
 
