@@ -5,10 +5,10 @@ const participate = require('../routes/participateForm');
 const requestInfo = require('../routes/requestInfo');
 const query = require('../routes/sendQuery');
 const contactUs = require('../routes/contactUs');
-const participateEdge = require('../routes/participateEdgeCapital');
-const requestInfoEdge = require('../routes/requestInfoEdgeCapital');
-const queryEdge = require('../routes/sendQueryEdgeCapital');
-const contactUsEdge = require('../routes/contactUsEdgeCapital');
+// const participateEdge = require('../routes/participateEdgeCapital');
+// const requestInfoEdge = require('../routes/requestInfoEdgeCapital');
+// const queryEdge = require('../routes/sendQueryEdgeCapital');
+// const contactUsEdge = require('../routes/contactUsEdgeCapital');
 require('dotenv').config();
 
 app.use(express.json());
@@ -25,14 +25,14 @@ app.use('/api/v1/edgefund', participate);
 app.use('/api/v1/edgefund', requestInfo);
 app.use('/api/v1/edgefund', query);
 app.use('/api/v1/edgefund', contactUs);
-app.use('/api/v1/edgeCapital', participateEdge);
-app.use('/api/v1/edgeCapital', requestInfoEdge);
-app.use('/api/v1/edgeCapital', queryEdge);
-app.use('/api/v1/edgeCapital', contactUsEdge);
+// app.use('/api/v1/edgeCapital', participateEdge);
+// app.use('/api/v1/edgeCapital', requestInfoEdge);
+// app.use('/api/v1/edgeCapital', queryEdge);
+// app.use('/api/v1/edgeCapital', contactUsEdge);
 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const start = async ()=>{
     try {
         app.listen(PORT, console.log('Server is running at port '+ PORT));

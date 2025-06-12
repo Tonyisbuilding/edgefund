@@ -2,7 +2,7 @@
 const Participate = require("../models/participateForm");
 const sendParticipateEmail = require("../sendMail/participateFormEdgeCapital");
 
-const participateForm = async (req, res) => {
+const participateFormEdgeCapital = async (req, res) => {
   try {
     const {
       name,
@@ -101,4 +101,4 @@ const participateForm = async (req, res) => {
   }
 };
 
-module.exports = { participateEdgeCapital };
+module.exports = { participateFormEdgeCapital };

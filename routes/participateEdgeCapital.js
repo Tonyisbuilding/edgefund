@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { 
-    participateForm
- } = require('../controller/participateEdgeCapital');
+    participateFormEdgeCapital
+ } = require('../controller/participateFormEdgeCapital');
 
 
  router.use(express.json());
  
- router.post('/participate', participateForm);
+ router.post('/participate', participateFormEdgeCapital);
  
  module.exports = router;

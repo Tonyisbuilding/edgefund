@@ -2,7 +2,7 @@
 const RequestInfo = require('../models/RequestInfo');
 const sendRequestInfoEmail = require('../sendMail/requestInfoEdgeCapital')
 
-const requestInfoForm = async (req, res) => {
+const requestInfoFormEdgeCapital = async (req, res) => {
   try {
     const {
       firstName,
