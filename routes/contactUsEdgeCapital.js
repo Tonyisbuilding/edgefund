@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { 
-    contactUsCapital
+    contactUsEdgeCapital
  } = require('../controller/contactUsEdgeCapital');
 
  router.use(express.json());
  
- router.post('/contactUs', contactUsCapital);
+ router.post('/contactUs', contactUsEdgeCapital);
  
  module.exports = router;
