@@ -16,28 +16,23 @@ const sendQueryMail = async (data) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      // service: "gmail",
-      // host: "smtp.gmail.com",
-      // port: 587,
-      // secure: false,
-      // auth: {
-      //   user: "salaudeenoluwapelumi98@gmail.com",
-      //   pass: "xqesplvduzdmmrsl",
-      // },
-      // tls: {
-      //   rejectUnauthorized: false,
-      // },
-      host: "smtp.zeptomail.com",
+      service: "gmail",
+      host: "smtp.gmail.com",
       port: 587,
-      secure: false, // Use false for port 587, then STARTTLS will be negotiated
+      secure: false,
       auth: {
-        user: "emailapikey", // Your ZeptoMail username (always 'emailapikey')
-        pass: "wSsVR60j8kXyXPx9lWX7L+8+yl5cD1KjEEgs3VGl4nOtGfDE/cc9lESfAQLxTfNLGDZvHTMXrOoqnEgC0Gda2tl/mFoCDSiF9mqRe1U4J3x17qnvhDzNX2tckBuMKo4Bzw9vnWNpG8gl+g==", // Your ZeptoMail API Key
+        user: "anthonyadewuyi01@gmail.com",
+        pass: "eulcysakrwjpfvwv",
+        // user: "salaudeenoluwapelumi98@gmail.com",
+        // pass: "xqesplvduzdmmrsl",
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
     const mailOptions = {
-      from: `tony@fixmypresence.com`,
+      from: `anthonyadewuyi01@gmail.com`,
       to: ["salaudeenoluwapelumi98@gmail.com", "info@edgenext.nl"],
       subject: `📩 Query Submission from ${name}`,
       html,
