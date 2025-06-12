@@ -7,6 +7,6 @@ const {
 
  router.use(express.json());
  
- router.post('/participate/edge', participateForm);
+ router.post('/participate', participateForm);
  
  module.exports = router;

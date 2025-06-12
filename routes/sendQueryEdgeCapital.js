@@ -6,6 +6,6 @@ const {
 
  router.use(express.json());
  
- router.post('/query/edge', sendQuery);
+ router.post('/query', sendQuery);
  
  module.exports = router;

@@ -6,6 +6,6 @@ const {
 
  router.use(express.json());
  
- router.post('/contactUs/edge', contactUs);
+ router.post('/contactUs', contactUs);
  
  module.exports = router;
