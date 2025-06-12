@@ -2,7 +2,7 @@
 const Query = require('../models/sendQueryForm');
 const sendQueryMail = require('../sendMail/sendQueryFormEdgeCapital');
 
-const sendQuery = async (req, res) => {
+const sendQueryEdgeCapital = async (req, res) => {
   try {
     const { name, mail, number, message } = req.body;
 

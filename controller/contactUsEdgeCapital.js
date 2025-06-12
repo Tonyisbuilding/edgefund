@@ -1,7 +1,7 @@
 // controllers/queryController.js
 const sendQueryMail = require('../sendMail/contactUsFormEdgeCapital');
 
-const contactUs = async (req, res) => {
+const contactUsEdgeCapital = async (req, res) => {
   try {
     const { firstName, lastName, email, number, message } = req.body;
 
