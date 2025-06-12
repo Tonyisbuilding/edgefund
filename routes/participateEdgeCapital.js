@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { 
     participateForm
- } = require('../controller/participateFormEdgeCapital');
+ } = require('../controller/participateEdgeCapital');
 
 
  router.use(express.json());

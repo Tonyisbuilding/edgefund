@@ -101,4 +101,4 @@ const participateForm = async (req, res) => {
   }
 };
 
-module.exports = { participateFormEdgeCapital };
+module.exports = { participateEdgeCapital };
