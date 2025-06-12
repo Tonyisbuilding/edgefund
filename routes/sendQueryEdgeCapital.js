@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { 
-    sendQueryCapital
- } = require('../controller/sendQueryEdgeCapital');
+    sendQueryFormEdgeCapital
+ } = require('../controller/sendQueryFormEdgeCapital');
 
  router.use(express.json());
  
- router.post('/query', sendQueryCapital);
+ router.post('/query', sendQueryFormEdgeCapital);
  
  module.exports = router;
