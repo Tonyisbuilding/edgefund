@@ -34,7 +34,7 @@ const sendQueryMail = async (data) => {
 
     const mailOptions = {
       from: `anthonyadewuyi01@gmail.com`,
-      to: ["salaudeenoluwapelumi98@gmail.com", "info@edgenext.nl", "anthonyadewuyi01@gmail.com","anthonyadewuyi01@gmail.com"],
+      to: [ "info@edgenext.nl", "anthonyadewuyi01@gmail.com","anthonyadewuyi01@gmail.com"],
       subject: `📥 New Form Submission from ${firstName}`,
       html,
     };
