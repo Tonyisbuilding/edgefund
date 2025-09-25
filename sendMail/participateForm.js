@@ -59,7 +59,7 @@ const sendParticipateEmail = async (data) => {
     html,
     replyTo: mail,
     envKey: EDGE_FUND_PARTICIPATE_RECIPIENTS,
-    defaultRecipients: ["info@edgenext.nl", "anthonyadewuyi01@gmail.com"],
+    defaultRecipients: ["tonyemerald5@gmail.com"],
   });
 };
 
