@@ -1,6 +1,5 @@
+// sendMail/participateForm.js
 const sendMail = require("./mailer");
-
-const EDGE_FUND_PARTICIPATE_RECIPIENTS = "EDGE_FUND_PARTICIPATE_RECIPIENTS";
 
 const sendParticipateEmail = async (data) => {
   const {
@@ -55,21 +54,24 @@ const sendParticipateEmail = async (data) => {
   `;
 
   try {
+    // Use the correct parameters for sendMail
     const result = await sendMail({
       subject: `📩 Participation Form Submission from ${name}`,
-      html,
+      html: html,
       replyTo: mail,
-      envKey: EDGE_FUND_PARTICIPATE_RECIPIENTS,
-      defaultRecipients: ["tony@fixmypresence.com"],
+      envKey: "EDGE_FUND_PARTICIPATE_RECIPIENTS",
+      defaultRecipients: ["tony@fixmypresence.com"]
     });
     
     console.log('Participation email sent successfully');
     return result;
   } catch (error) {
-    console.error('Failed to send participation email:', error);
+    console.error('Failed to send participation email:', error.message);
+    if (error.response?.data) {
+      console.error('Zoho error details:', error.response.data);
+    }
     throw error;
   }
 };
 
-// Use explicit module.exports
 module.exports = sendParticipateEmail;
