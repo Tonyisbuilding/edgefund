@@ -53,74 +53,37 @@ const getAccessToken = async () => {
   if (cachedToken && Date.now() < tokenExpiry - 60_000) {
     return cachedToken;
   }
-
   return exchangeRefreshToken();
-};
-
-const buildRecipientField = (value) => {
-  if (!value) {
-    return undefined;
-  }
-
-  if (Array.isArray(value)) {
-    return value.filter(Boolean).join(",");
-  }
-
-  return String(value)
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .join(",");
 };
 
 const getFromAddress = (from) => {
   const explicit = extractEmail(from);
-  if (explicit) {
-    return explicit;
-  }
+  if (explicit) return explicit;
 
   const envFrom = extractEmail(process.env.ZOHO_FROM_ADDRESS) || extractEmail(process.env.EMAIL_FROM);
-  if (envFrom) {
-    return envFrom;
-  }
+  if (envFrom) return envFrom;
 
   throw new Error("Unable to determine Zoho from address. Set ZOHO_FROM_ADDRESS or EMAIL_FROM.");
 };
 
-const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from }) => {
+const sendZohoMail = async ({ subject, html, text, to, from }) => {
   const accessToken = await getAccessToken();
   const accountId = getAccountId();
   const endpoint = `${getMailDomain()}/api/accounts/${accountId}/messages`;
 
-  const toAddress = buildRecipientField(to);
-  if (!toAddress) {
+  // Ensure toAddress is always an array
+  const toAddress = Array.isArray(to) ? to : [to];
+  if (!toAddress.length) {
     throw new Error("Zoho mail send failed: no recipients provided.");
   }
 
   const payload = {
     fromAddress: getFromAddress(from),
-    toAddress,
+    toAddress, // ✅ Array of emails
     subject,
     mailFormat: html ? "html" : "text",
     content: html || text || "",
-    askReceipt: false,
-    isPlainCheck: false,
   };
-
-  const ccAddress = buildRecipientField(cc);
-  const bccAddress = buildRecipientField(bcc);
-
-  if (ccAddress) {
-    payload.ccAddress = ccAddress;
-  }
-
-  if (bccAddress) {
-    payload.bccAddress = bccAddress;
-  }
-
-  if (replyTo) {
-    payload.replyToAddress = replyTo;
-  }
 
   if (!payload.content) {
     throw new Error("Zoho mail send failed: no content supplied.");
@@ -130,6 +93,7 @@ const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from })
     const response = await axios.post(endpoint, payload, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
+        "Content-Type": "application/json",
       },
     });
 
