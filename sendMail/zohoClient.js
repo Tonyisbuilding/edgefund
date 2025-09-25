@@ -89,32 +89,42 @@ const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from })
     throw new Error("Zoho mail send failed: no recipients provided.");
   }
 
-  const payload = {
-    fromAddress: getFromAddress(from),
-    toAddress,
-    subject,
-    mailFormat: html ? "html" : "text",
-    content: html || text || "",
-  };
+  const fromEmail = getFromAddress(from);
+  const toList = buildRecipientField(to);
+  const ccList = buildRecipientField(cc);
+  const bccList = buildRecipientField(bcc);
 
-  const ccAddress = buildRecipientField(cc);
-  const bccAddress = buildRecipientField(bcc);
-
-  if (ccAddress) {
-    payload.ccAddress = ccAddress;
+  if (!toList) {
+    throw new Error("Zoho mail send failed: no recipients provided.");
   }
 
-  if (bccAddress) {
-    payload.bccAddress = bccAddress;
+  const mail = {
+    from: {
+      emailAddress: fromEmail,
+    },
+    to: toList.split(',').map((email) => ({ emailAddress: email })),
+    subject,
+    content: html || text || "",
+    mailFormat: html ? "html" : "text",
+  };
+
+  if (!mail.content) {
+    throw new Error("Zoho mail send failed: no content supplied.");
+  }
+
+  if (ccList) {
+    mail.cc = ccList.split(',').map((email) => ({ emailAddress: email }));
+  }
+
+  if (bccList) {
+    mail.bcc = bccList.split(',').map((email) => ({ emailAddress: email }));
   }
 
   if (replyTo) {
-    payload.replyToAddress = replyTo;
+    mail.replyToAddress = replyTo;
   }
 
-  if (!payload.content) {
-    throw new Error("Zoho mail send failed: no content supplied.");
-  }
+  const payload = { mail };
 
   try {
     const response = await axios.post(endpoint, payload, {
