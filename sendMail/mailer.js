@@ -65,7 +65,22 @@ const sendMail = async ({
     mailOptions.attachments = attachments;
   }
 
-  return transporter.sendMail(mailOptions);
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    if (process.env.SMTP_DEBUG === 'true') {
+      console.log('SMTP message sent', {
+        messageId: info.messageId,
+        response: info.response,
+        to: mailOptions.to,
+        cc: mailOptions.cc,
+        bcc: mailOptions.bcc,
+      });
+    }
+    return info;
+  } catch (error) {
+    console.error('SMTP send failed', error);
+    throw error;
+  }
 };
 
 module.exports = sendMail;

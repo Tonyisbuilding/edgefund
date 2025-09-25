@@ -43,8 +43,34 @@ const getTransporter = () => {
     auth,
   };
 
+  if (process.env.SMTP_POOL === 'true') {
+    transportConfig.pool = true;
+  }
+
+  if (process.env.SMTP_MAX_CONNECTIONS) {
+    transportConfig.maxConnections = Number(process.env.SMTP_MAX_CONNECTIONS);
+  }
+
+  if (process.env.SMTP_MAX_MESSAGES) {
+    transportConfig.maxMessages = Number(process.env.SMTP_MAX_MESSAGES);
+  }
+
+  if (process.env.SMTP_TIMEOUT) {
+    const timeout = Number(process.env.SMTP_TIMEOUT);
+    if (!Number.isNaN(timeout)) {
+      transportConfig.connectionTimeout = timeout;
+      transportConfig.greetingTimeout = timeout;
+      transportConfig.socketTimeout = timeout;
+    }
+  }
+
   if (process.env.SMTP_SERVICE) {
     transportConfig.service = process.env.SMTP_SERVICE;
+  }
+
+  if (process.env.SMTP_DEBUG === 'true') {
+    transportConfig.logger = true;
+    transportConfig.debug = true;
   }
 
   if (toBool(process.env.SMTP_IGNORE_TLS_ERRORS) || process.env.SMTP_REJECT_UNAUTHORIZED === "false") {
