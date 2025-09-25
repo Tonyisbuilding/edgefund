@@ -103,6 +103,8 @@ const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from })
     subject,
     mailFormat: html ? "html" : "text",
     content: html || text || "",
+    askReceipt: false,
+    isPlainCheck: false,
   };
 
   const ccAddress = buildRecipientField(cc);
@@ -130,6 +132,14 @@ const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from })
         Authorization: `Zoho-oauthtoken ${accessToken}`,
       },
     });
+
+    if (process.env.ZOHO_DEBUG === "true") {
+      console.log("Zoho mail sent", {
+        endpoint,
+        payload,
+        response: response.data,
+      });
+    }
 
     return response.data;
   } catch (error) {
