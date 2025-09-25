@@ -108,6 +108,23 @@ app.use('/api/v1/edgeCapital', requestInfoEdge);
 app.use('/api/v1/edgeCapital', queryEdge);
 app.use('/api/v1/edgeCapital', contactUsEdge);
 
+
+const sendZohoMail = require("../sendMail/zohoClient");
+app.get("/api/v1/test-email", async (req, res) => {
+  try {
+    const result = await sendZohoMail({
+      subject: "Test Email",
+      html: "<p>Hello Tony 👋 — test email from live API route</p>",
+      to: process.env.EDGE_FUND_PARTICIPATE_RECIPIENTS,
+    });
+    res.json({ success: true, response: result });
+  } catch (err) {
+    console.error("Test email failed:", err.response?.data || err.message);
+    res.status(500).json({ success: false, error: err.response?.data || err.message });
+  }
+});
+
+
 const PORT = process.env.PORT || 5000;
 
 if (require.main === module) {
