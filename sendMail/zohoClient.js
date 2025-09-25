@@ -98,33 +98,29 @@ const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from })
     throw new Error("Zoho mail send failed: no recipients provided.");
   }
 
-  const mail = {
-    from: {
-      emailAddress: fromEmail,
-    },
-    to: toList.split(',').map((email) => ({ emailAddress: email })),
+  const payload = {
+    fromAddress: fromEmail,
+    toAddress: toList,
     subject,
     content: html || text || "",
     mailFormat: html ? "html" : "text",
   };
 
-  if (!mail.content) {
+  if (!payload.content) {
     throw new Error("Zoho mail send failed: no content supplied.");
   }
 
   if (ccList) {
-    mail.cc = ccList.split(',').map((email) => ({ emailAddress: email }));
+    payload.ccAddress = ccList;
   }
 
   if (bccList) {
-    mail.bcc = bccList.split(',').map((email) => ({ emailAddress: email }));
+    payload.bccAddress = bccList;
   }
 
   if (replyTo) {
-    mail.replyToAddress = replyTo;
+    payload.replyToAddress = replyTo;
   }
-
-  const payload = { mail };
 
   try {
     const response = await axios.post(endpoint, payload, {
