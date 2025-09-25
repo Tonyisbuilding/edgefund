@@ -1,84 +1,14 @@
-const nodemailer = require("nodemailer");
-
-let cachedTransporter;
-
-const toBool = (value, fallback = false) => {
-  if (value === undefined) {
-    return fallback;
-  }
-  if (value === "true" || value === "1") {
-    return true;
-  }
-  if (value === "false" || value === "0") {
-    return false;
-  }
-  return fallback;
-};
-
-const getSmtpAuth = () => {
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
-  const pass = process.env.SMTP_PASS || process.env.SMTP_PASSWORD || process.env.EMAIL_PASS;
-
-  if (!user || !pass) {
-    throw new Error("SMTP credentials missing. Set SMTP_USER and SMTP_PASS environment variables.");
+const extractEmail = (value) => {
+  if (!value) {
+    return undefined;
   }
 
-  return { user, pass };
-};
-
-const getTransporter = () => {
-  if (cachedTransporter) {
-    return cachedTransporter;
+  const match = /<([^>]+)>/.exec(value);
+  if (match) {
+    return match[1].trim();
   }
 
-  const host = process.env.SMTP_HOST || "smtp.gmail.com";
-  const port = Number(process.env.SMTP_PORT || 587);
-  const secure = toBool(process.env.SMTP_SECURE, port === 465);
-  const auth = getSmtpAuth();
-
-  const transportConfig = {
-    host,
-    port,
-    secure,
-    auth,
-  };
-
-  if (process.env.SMTP_POOL === 'true') {
-    transportConfig.pool = true;
-  }
-
-  if (process.env.SMTP_MAX_CONNECTIONS) {
-    transportConfig.maxConnections = Number(process.env.SMTP_MAX_CONNECTIONS);
-  }
-
-  if (process.env.SMTP_MAX_MESSAGES) {
-    transportConfig.maxMessages = Number(process.env.SMTP_MAX_MESSAGES);
-  }
-
-  if (process.env.SMTP_TIMEOUT) {
-    const timeout = Number(process.env.SMTP_TIMEOUT);
-    if (!Number.isNaN(timeout)) {
-      transportConfig.connectionTimeout = timeout;
-      transportConfig.greetingTimeout = timeout;
-      transportConfig.socketTimeout = timeout;
-    }
-  }
-
-  if (process.env.SMTP_SERVICE) {
-    transportConfig.service = process.env.SMTP_SERVICE;
-  }
-
-  if (process.env.SMTP_DEBUG === 'true') {
-    transportConfig.logger = true;
-    transportConfig.debug = true;
-  }
-
-  if (toBool(process.env.SMTP_IGNORE_TLS_ERRORS) || process.env.SMTP_REJECT_UNAUTHORIZED === "false") {
-    transportConfig.tls = { rejectUnauthorized: false };
-  }
-
-  cachedTransporter = nodemailer.createTransport(transportConfig);
-  return cachedTransporter;
+  return value.trim();
 };
 
 const parseList = (value) => {
@@ -93,7 +23,7 @@ const parseList = (value) => {
 };
 
 const getFromAddress = () =>
-  process.env.EMAIL_FROM || process.env.SMTP_FROM || process.env.SMTP_USER || process.env.EMAIL_USER;
+  process.env.ZOHO_FROM_ADDRESS || extractEmail(process.env.EMAIL_FROM) || process.env.SMTP_USER || process.env.EMAIL_USER;
 
 const getRecipients = (envKey, fallback = []) => {
   const recipients = parseList(process.env[envKey]);
@@ -105,7 +35,8 @@ const getRecipients = (envKey, fallback = []) => {
 };
 
 module.exports = {
-  getTransporter,
+  extractEmail,
+  parseList,
   getFromAddress,
   getRecipients,
 };

@@ -1,4 +1,5 @@
-const { getTransporter, getFromAddress, getRecipients } = require("./config");
+const { getFromAddress, getRecipients } = require("./config");
+const sendZohoMail = require("./zohoClient");
 
 const ensureArray = (value) => {
   if (Array.isArray(value)) {
@@ -23,64 +24,30 @@ const sendMail = async ({
   replyTo,
   attachments,
 }) => {
-  const transporter = getTransporter();
-  const fromAddress = from || getFromAddress();
-  const recipients = to || getRecipients(envKey, defaultRecipients);
-
-  if (!fromAddress) {
-    throw new Error("Email sender address missing. Set EMAIL_FROM or SMTP_FROM environment variable.");
+  if (attachments && attachments.length) {
+    throw new Error("Attachments are not supported with the current Zoho Mail integration.");
   }
+
+  const fromAddress = from || getFromAddress();
+  const recipients = ensureArray(to || getRecipients(envKey, defaultRecipients));
 
   if (!recipients.length) {
     throw new Error("No recipients configured for outgoing email.");
   }
 
-  const mailOptions = {
-    from: fromAddress,
-    to: ensureArray(recipients),
+  const ccList = cc ? ensureArray(cc) : undefined;
+  const bccList = bcc ? ensureArray(bcc) : undefined;
+
+  return sendZohoMail({
     subject,
-  };
-
-  if (html) {
-    mailOptions.html = html;
-  }
-
-  if (text) {
-    mailOptions.text = text;
-  }
-
-  if (cc) {
-    mailOptions.cc = ensureArray(cc);
-  }
-
-  if (bcc) {
-    mailOptions.bcc = ensureArray(bcc);
-  }
-
-  if (replyTo) {
-    mailOptions.replyTo = replyTo;
-  }
-
-  if (attachments) {
-    mailOptions.attachments = attachments;
-  }
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    if (process.env.SMTP_DEBUG === 'true') {
-      console.log('SMTP message sent', {
-        messageId: info.messageId,
-        response: info.response,
-        to: mailOptions.to,
-        cc: mailOptions.cc,
-        bcc: mailOptions.bcc,
-      });
-    }
-    return info;
-  } catch (error) {
-    console.error('SMTP send failed', error);
-    throw error;
-  }
+    html,
+    text,
+    from: fromAddress,
+    to: recipients,
+    cc: ccList,
+    bcc: bccList,
+    replyTo,
+  });
 };
 
 module.exports = sendMail;
