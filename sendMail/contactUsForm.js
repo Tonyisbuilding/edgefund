@@ -23,8 +23,8 @@ const sendQueryMail = async (data) => {
       port: 465,
       secure: false,
       auth: {
-        user: "tonyemerald5@gmail.com",
-        pass: "uispmcduuajipzzp",
+       user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS,
         // user: "anthonyadewuyi01@gmail.com",
         // pass: "eulcysakrwjpfvwv",
       },
