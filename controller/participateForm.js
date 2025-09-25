@@ -93,7 +93,7 @@ const participateForm = async (req, res) => {
     // await newParticipant.save();
 
     // Send email with all fields
-    sendParticipateEmail(sanitizedData);
+    await sendParticipateEmail(sanitizedData);
     return res.status(201).json({ message: "Form submitted successfully" });
   } catch (error) {
     console.error("Error submitting participation form:", error);
