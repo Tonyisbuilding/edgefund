@@ -145,8 +145,6 @@ const sendParticipateEmail = async (data) => {
       auth: {
         user: "anthonyadewuyi01@gmail.com",
         pass: "eulcysakrwjpfvwv",
-        // user: "salaudeenoluwapelumi98@gmail.com",
-        // pass: "xqesplvduzdmmrsl",
       },
       tls: {
         rejectUnauthorized: false,
