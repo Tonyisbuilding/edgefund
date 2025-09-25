@@ -1,0 +1,15 @@
+# Ignore node modules
+node_modules/
+
+# Ignore environment variables
+.env
+
+# Optional: logs
+*.log
+
+# Optional: OS / IDE junk files
+.DS_Store
+.vscode/
+.vercel/
+npm-debug.log
+.vercel

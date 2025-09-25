@@ -43,4 +43,6 @@ const start = async ()=>{
 };
 
 start();
-//KD8JKsPMbvRS5rD9
+
+
+module.exports = app;
