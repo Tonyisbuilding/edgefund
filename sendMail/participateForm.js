@@ -1,66 +1,98 @@
-const sendMail = require("./mailer");
+// controllers/participateController.js
+const Participate = require("../models/participateForm");
+const sendParticipateEmail = require("../sendMail/participateForm");
 
-const EDGE_FUND_PARTICIPATE_RECIPIENTS = "EDGE_FUND_PARTICIPATE_RECIPIENTS";
+const participateForm = async (req, res) => {
+  try {
+    const {
+      name,
+      street, 
+      zipcode, 
+      city,
+      country,
+      nationality,
+      phone, 
+      mail,
+      iban, 
+      onBehalfOf, 
+      tin, 
+      idType, 
+      idNumber, 
+      dateOfBirth, 
+      initialDeposit, 
+    } = req.body;
 
-const sendParticipateEmail = async (data) => {
-  const {
-    name,
-    street,
-    zipcode,
-    city,
-    country,
-    nationality,
-    phone,
-    mail,
-    iban,
-    onBehalfOf,
-    tin,
-    idType,
-    idNumber,
-    dateOfBirth,
-    initialDeposit,
-  } = data;
+    // Validate required fields
+    if (
+      !name ||
+      !street ||
+      !city ||
+      !country ||
+      !nationality ||
+      !phone ||
+      !mail ||
+      !iban ||
+      !dateOfBirth ||
+      !initialDeposit
+    ) {
+      return res.status(400).json({ error: "Please fill in all required fields" });
+    }
 
-  const html = `
-   <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Participation Request</title>
-      </head>
-      <body>
-        <div style="padding: 2rem; font-family: Arial, sans-serif; background-color: #f0f8ff;">
-          <h2 style="color: #2980b9;">🙋 Participation Request</h2>
-          <ul>
-            <li><strong>Name:</strong> ${name}</li>
-            <li><strong>City:</strong> ${city}</li>
-            <li><strong>Country:</strong> ${country}</li>
-            <li><strong>Nationality:</strong> ${nationality}</li>
-            <li><strong>Street:</strong> ${street}</li>
-            <li><strong>Zip code:</strong> ${zipcode}</li>
-            <li><strong>Phone Number:</strong> ${phone}</li>
-            <li><strong>Date Of Birth:</strong> ${dateOfBirth}</li>
-            <li><strong>IBAN:</strong> ${iban}</li>
-            <li><strong>On Behalf Of:</strong> ${onBehalfOf}</li>
-            <li><strong>TIN:</strong> ${tin}</li>
-            <li><strong>ID Type:</strong> ${idType}</li>
-            <li><strong>ID Number:</strong> ${idNumber}</li>
-            <li><strong>Initial Deposit:</strong> ${initialDeposit}</li>
-            <li><strong>Email:</strong> ${mail}</li>
-          </ul>
-        </div>
-      </body>
-    </html>
-  `;
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(mail)) {
+      return res.status(400).json({ error: "Invalid email format" });
+    }
 
-  await sendMail({
-    subject: `📩 Query Submission from ${name}`,
-    html,
-    replyTo: mail,
-    envKey: EDGE_FUND_PARTICIPATE_RECIPIENTS,
-    defaultRecipients: ["tonyemerald5@gmail.com"],
-  });
+    // Phone number format validation
+    const phoneRegex = /^\+?\d{7,15}$/;
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({ error: "Invalid phone number format" });
+    }
+
+    // Date of birth validation (basic check for format YYYY-MM-DD)
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(dateOfBirth)) {
+      return res.status(400).json({ error: "Invalid date of birth format (use YYYY-MM-DD)" });
+    }
+
+    // Initial deposit validation (must be a positive number)
+    const deposit = Number(initialDeposit);
+    if (isNaN(deposit) || deposit <= 0) {
+      return res.status(400).json({ error: "Initial deposit must be a positive number" });
+    }
+
+    // Sanitize and format the input
+    const sanitizedData = {
+      name: name.trim(),
+      street: street.trim(),
+      zipcode: zipcode ? zipcode.trim() : undefined, // optional
+      city: city.trim(),
+      country: country.trim(),
+      nationality: nationality.trim(),
+      phone: phone.trim(),
+      mail: mail.trim().toLowerCase(),
+      iban: iban.trim().replace(/\s/g, ""), // Remove spaces from IBAN
+      onBehalfOf: onBehalfOf ? onBehalfOf.trim() : undefined, // optional
+      tin: tin ? tin.trim() : undefined, // optional
+      idType: idType ? idType.trim() : undefined, // optional
+      idNumber: idNumber ? idNumber.trim() : undefined, // optional
+      dateOfBirth: dateOfBirth.trim(),
+      initialDeposit: deposit, // Already validated as a number
+    };
+
+    // Save to MongoDB (uncomment when ready to use)
+    // const newParticipant = new Participate(sanitizedData);
+    // await newParticipant.save();
+
+    // IMPORTANT: Await the email sending!
+    await sendParticipateEmail(sanitizedData);
+    
+    return res.status(201).json({ message: "Form submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting participation form:", error);
+    return res.status(500).json({ error: "Internal server error. Please try again later." });
+  }
 };
 
-module.exports = sendParticipateEmail;
+module.exports = { participateForm };
