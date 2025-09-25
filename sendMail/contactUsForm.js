@@ -25,8 +25,6 @@ const sendQueryMail = async (data) => {
       auth: {
        user: process.env.EMAIL_USER, 
         pass: process.env.EMAIL_PASS,
-        // user: "anthonyadewuyi01@gmail.com",
-        // pass: "eulcysakrwjpfvwv",
       },
       tls: {
         rejectUnauthorized: false,
