@@ -19,17 +19,17 @@ const sendQueryMail = async (data) => {
     const transporter = nodemailer.createTransport({
        service: "gmail",
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      // port: 587,
+      // secure: false,
       auth: {
         // user: "salaudeenoluwapelumi98@gmail.com",
         // pass: "xqesplvduzdmmrsl",
         user: "anthonyadewuyi01@gmail.com",
         pass: "eulcysakrwjpfvwv",
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
+      // tls: {
+      //   rejectUnauthorized: false,
+      // },
     });
 
     const mailOptions = {
