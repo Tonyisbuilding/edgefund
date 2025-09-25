@@ -141,7 +141,10 @@ const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from })
     return response.data;
   } catch (error) {
     const message = error.response?.data || error.message;
-    console.error("Zoho Mail API send failed", message);
+    console.error("Zoho Mail API send failed", {
+      message,
+      payload,
+    });
     throw error;
   }
 };
