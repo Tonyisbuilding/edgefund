@@ -143,8 +143,8 @@ const sendParticipateEmail = async (data) => {
       port: 587,
       secure: false,
       auth: {
-        user: "anthonyadewuyi01@gmail.com",
-        pass: "eulcysakrwjpfvwv",
+         user: "tonyemerald5@gmail.com",
+        pass: "uispmcduuajipzzp",
       },
       tls: {
         rejectUnauthorized: false,

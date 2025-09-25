@@ -21,10 +21,8 @@ const sendQueryMail = async (data) => {
       port: 587,
       secure: false,
       auth: {
-        user: "anthonyadewuyi01@gmail.com",
-        pass: "eulcysakrwjpfvwv",
-        // user: "salaudeenoluwapelumi98@gmail.com",
-        // pass: "xqesplvduzdmmrsl",
+        user: "tonyemerald5@gmail.com",
+        pass: "uispmcduuajipzzp",
       },
       tls: {
         rejectUnauthorized: false,

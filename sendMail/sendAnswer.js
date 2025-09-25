@@ -10,10 +10,8 @@ const sendAnswers = async (data) => {
       host: "smtp.gmail.com",
       port: 587,
       auth: {
-        // user: "salaudeenoluwapelumi98@gmail.com",
-        // pass: "xqesplvduzdmmrsl",
-        user: "anthonyadewuyi01@gmail.com",
-        pass: "eulcysakrwjpfvwv",
+         user: "tonyemerald5@gmail.com",
+        pass: "uispmcduuajipzzp",
       },
       secure: false,
       tls: {
