@@ -4,6 +4,19 @@ const { extractEmail } = require("./config");
 let cachedToken;
 let tokenExpiry = 0;
 
+
+
+const buildRecipientField = (value) => {
+  if (!value) return undefined;
+
+  return String(value)
+    .split(',')
+    .map((item) => item.trim().replace(/\r?\n|\r/g, "")) // strip spaces + newlines
+    .filter(Boolean)
+    .join(',');
+};
+
+
 const getEnvOrThrow = (key) => {
   const value = process.env[key];
   if (!value) {
@@ -66,24 +79,38 @@ const getFromAddress = (from) => {
   throw new Error("Unable to determine Zoho from address. Set ZOHO_FROM_ADDRESS or EMAIL_FROM.");
 };
 
-const sendZohoMail = async ({ subject, html, text, to, from }) => {
+const sendZohoMail = async ({ subject, html, text, to, cc, bcc, replyTo, from }) => {
   const accessToken = await getAccessToken();
   const accountId = getAccountId();
   const endpoint = `${getMailDomain()}/api/accounts/${accountId}/messages`;
 
-  // Ensure toAddress is always an array
-  const toAddress = Array.isArray(to) ? to : [to];
-  if (!toAddress.length) {
+  const toAddress = buildRecipientField(to);
+  if (!toAddress) {
     throw new Error("Zoho mail send failed: no recipients provided.");
   }
 
   const payload = {
     fromAddress: getFromAddress(from),
-    toAddress, // ✅ Array of emails
+    toAddress,
     subject,
     mailFormat: html ? "html" : "text",
     content: html || text || "",
   };
+
+  const ccAddress = buildRecipientField(cc);
+  const bccAddress = buildRecipientField(bcc);
+
+  if (ccAddress) {
+    payload.ccAddress = ccAddress;
+  }
+
+  if (bccAddress) {
+    payload.bccAddress = bccAddress;
+  }
+
+  if (replyTo) {
+    payload.replyToAddress = replyTo;
+  }
 
   if (!payload.content) {
     throw new Error("Zoho mail send failed: no content supplied.");
