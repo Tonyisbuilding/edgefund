@@ -1,10 +1,9 @@
-// utils/sendQueryMail.js
-const nodemailer = require("nodemailer");
+const sendMail = require("./mailer");
 
-// utils/sendRequestInfoEmail.js
+const EDGE_FUND_REQUEST_INFO_RECIPIENTS = "EDGE_FUND_REQUEST_INFO_RECIPIENTS";
+
 const sendRequestInfoEmail = async (data) => {
-  const { firstName, lastName, email, phone, preference, message, newsletter } =
-    data;
+  const { firstName, lastName, email, phone, preference, message, newsletter } = data;
 
   const html = `
     <!DOCTYPE html>
@@ -23,7 +22,7 @@ const sendRequestInfoEmail = async (data) => {
               <li><strong>Email:</strong> ${email}</li>
               <li><strong>Phone Number:</strong> ${phone}</li>
               <li><strong>Interested In:</strong> ${preference}</li>
-              <li><strong>News letter:</strong> ${newsletter}</li>
+              <li><strong>Newsletter:</strong> ${newsletter}</li>
               <li><strong>Message:</strong><br/>${message}</li>
             </ul>
           </div>
@@ -32,29 +31,13 @@ const sendRequestInfoEmail = async (data) => {
   `;
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-         user: "tonyemerald5@gmail.com",
-        pass: "uispmcduuajipzzp",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    const mailOptions = {
-      from: `anthonyadewuyi01@gmail.com`,
-      to: [ "info@edgenext.nl", "anthonyadewuyi01@gmail.com","anthonyadewuyi01@gmail.com"],
-
+    await sendMail({
       subject: `📩 Query Submission from ${firstName}`,
       html,
-    };
-
-    await transporter.sendMail(mailOptions);
+      replyTo: email,
+      envKey: EDGE_FUND_REQUEST_INFO_RECIPIENTS,
+      defaultRecipients: ["info@edgenext.nl", "anthonyadewuyi01@gmail.com"],
+    });
   } catch (error) {
     console.error("Error sending query email:", error.message);
     throw new Error("Email failed to send.");

@@ -1,5 +1,6 @@
-// utils/sendQueryMail.js
-const nodemailer = require("nodemailer");
+const sendMail = require("./mailer");
+
+const EDGE_FUND_QUERY_RECIPIENTS = "EDGE_FUND_QUERY_RECIPIENTS";
 
 const sendQueryMail = async (data) => {
   const { name, mail, number, message } = data;
@@ -15,28 +16,13 @@ const sendQueryMail = async (data) => {
   `;
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: "tonyemerald5@gmail.com",
-        pass: "uispmcduuajipzzp",
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    const mailOptions = {
-      from: `anthonyadewuyi01@gmail.com`,
-      to: [ "info@edgenext.nl", "anthonyadewuyi01@gmail.com","anthonyadewuyi01@gmail.com"],
+    await sendMail({
       subject: `📩 Query Submission from ${name}`,
       html,
-    };
-
-    await transporter.sendMail(mailOptions);
+      replyTo: mail,
+      envKey: EDGE_FUND_QUERY_RECIPIENTS,
+      defaultRecipients: ["info@edgenext.nl", "anthonyadewuyi01@gmail.com"],
+    });
   } catch (error) {
     console.error("Error sending query email:", error.message);
     throw new Error("Email failed to send.");

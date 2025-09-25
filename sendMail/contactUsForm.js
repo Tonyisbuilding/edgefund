@@ -1,7 +1,8 @@
-// utils/sendQueryMail.js
-const nodemailer = require("nodemailer");
+const sendMail = require("./mailer");
 
-const sendQueryMail = async (data) => {
+const EDGE_FUND_CONTACT_RECIPIENTS = "EDGE_FUND_CONTACT_RECIPIENTS";
+
+const sendContactMail = async (data) => {
   const { firstName, lastName, mail, number, message } = data;
   const html = `
     <div style="font-family: Arial, sans-serif; padding: 2rem; background: #f4f4f4">
@@ -16,36 +17,17 @@ const sendQueryMail = async (data) => {
   `;
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
-      // port: 587,
-      port: 465,
-      secure: false,
-      auth: {
-       user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    const mailOptions = {
-      from: `anthonyadewuyi01@gmail.com`,
-      to: [
-        "info@edgenext.nl",
-        "anthonyadewuyi01@gmail.com",
-      ],
+    await sendMail({
       subject: `📥 New Form Submission from ${firstName}`,
       html,
-    };
-
-    await transporter.sendMail(mailOptions);
+      replyTo: mail,
+      envKey: EDGE_FUND_CONTACT_RECIPIENTS,
+      defaultRecipients: ["info@edgenext.nl", "anthonyadewuyi01@gmail.com"],
+    });
   } catch (error) {
     console.error("Error sending query email:", error.message);
     throw new Error("Email failed to send.");
   }
 };
 
-module.exports = sendQueryMail;
+module.exports = sendContactMail;
