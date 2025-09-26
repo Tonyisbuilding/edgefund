@@ -38,14 +38,14 @@ const sendParticipateEmail = async (data) => {
             <li><strong>Country:</strong> ${country}</li>
             <li><strong>Nationality:</strong> ${nationality}</li>
             <li><strong>Street:</strong> ${street}</li>
-            <li><strong>Zip code:</strong> ${zipcode}</li>
+            <li><strong>Zip code:</strong> ${zipcode || "N/A"}</li>
             <li><strong>Phone Number:</strong> ${phone}</li>
             <li><strong>Date Of Birth:</strong> ${dateOfBirth}</li>
             <li><strong>IBAN:</strong> ${iban}</li>
-            <li><strong>On Behalf Of:</strong> ${onBehalfOf}</li>
-            <li><strong>TIN:</strong> ${tin}</li>
-            <li><strong>ID Type:</strong> ${idType}</li>
-            <li><strong>ID Number:</strong> ${idNumber}</li>
+            <li><strong>On Behalf Of:</strong> ${onBehalfOf || "N/A"}</li>
+            <li><strong>TIN:</strong> ${tin || "N/A"}</li>
+            <li><strong>ID Type:</strong> ${idType || "N/A"}</li>
+            <li><strong>ID Number:</strong> ${idNumber || "N/A"}</li>
             <li><strong>Initial Deposit:</strong> ${initialDeposit}</li>
             <li><strong>Email:</strong> ${mail}</li>
           </ul>
@@ -54,13 +54,28 @@ const sendParticipateEmail = async (data) => {
     </html>
   `;
 
-  await sendMail({
-    subject: `📩 Query Submission from ${name}`,
-    html,
-    replyTo: mail,
-    envKey: EDGE_CAPITAL_PARTICIPATE_RECIPIENTS,
-    defaultRecipients: ["leads@edge-capital.nl", "anthonyadewuyi01@gmail.com"],
-  });
+  try {
+    const result = await sendMail({
+      subject: `📩 Participation Form Submission from ${name}`,
+      html,
+      replyTo: mail,
+      envKey: EDGE_CAPITAL_PARTICIPATE_RECIPIENTS,
+      defaultRecipients: ["leads@edge-capital.nl", "anthonyadewuyi01@gmail.com"],
+    });
+
+    console.log("✅ Participation email sent successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("❌ Failed to send participation email");
+    console.error("Message:", error.message);
+
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Data:", error.response.data);
+    }
+
+    throw error;
+  }
 };
 
 module.exports = sendParticipateEmail;

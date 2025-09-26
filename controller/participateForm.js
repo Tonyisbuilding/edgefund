@@ -1,103 +1,73 @@
 // controllers/participateController.js
-const Participate = require("../models/participateForm");
 const sendParticipateEmail = require("../sendMail/participateForm");
 
 const participateForm = async (req, res) => {
+  const t0 = Date.now();
   try {
     const {
-      name,
-      street, 
-      zipcode, 
-      city,
-      country,
-      nationality,
-      phone, 
-      mail,
-      iban, 
-      onBehalfOf, 
-      tin, 
-      idType, 
-      idNumber, 
-      dateOfBirth, 
-      initialDeposit, 
-    } = req.body;
+      name, street, zipcode, city, country, nationality, phone, mail,
+      iban, onBehalfOf, tin, idType, idNumber, dateOfBirth, initialDeposit,
+    } = req.body || {};
 
-    // Validate required fields
-    if (
-      !name ||
-      !street ||
-      !city ||
-      !country ||
-      !nationality ||
-      !phone ||
-      !mail ||
-      !iban ||
-      !dateOfBirth ||
-      !initialDeposit
-    ) {
-      return res.status(400).json({ error: "Please fill in all required fields" });
+    // Basic validation
+    const required = { name, street, city, country, nationality, phone, mail, iban, dateOfBirth, initialDeposit };
+    const missing = Object.entries(required).filter(([_, v]) => !v).map(([k]) => k);
+    if (missing.length) {
+      return res.status(400).json({ error: `Please fill in all required fields: ${missing.join(", ")}` });
     }
-
-    //  My validation using Regex
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(mail)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
       return res.status(400).json({ error: "Invalid email format" });
     }
-
-    // Phone number format validation
-    const phoneRegex = /^\+?\d{7,15}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!/^\+?\d{7,15}$/.test(phone)) {
       return res.status(400).json({ error: "Invalid phone number format" });
     }
-
-    // IBAN format validation (basic check for alphanumeric and length)
-    // const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{4,30}$/;
-    // if (!ibanRegex.test(iban.replace(/\s/g, ""))) {
-    //   return res.status(400).json({ error: "Invalid IBAN format" });
-    // }
-
-    // Date of birth validation (basic check for format YYYY-MM-DD)
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateRegex.test(dateOfBirth)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) {
       return res.status(400).json({ error: "Invalid date of birth format (use YYYY-MM-DD)" });
     }
-
-    // Initial deposit validation (must be a positive number)
     const deposit = Number(initialDeposit);
-    if (isNaN(deposit) || deposit <= 0) {
+    if (Number.isNaN(deposit) || deposit <= 0) {
       return res.status(400).json({ error: "Initial deposit must be a positive number" });
     }
 
-    // Sanitize and format the input
-    const sanitizedData = {
+    const sanitized = {
       name: name.trim(),
       street: street.trim(),
-      zipcode: zipcode ? zipcode.trim() : undefined, // optional
+      zipcode: zipcode ? String(zipcode).trim() : undefined,
       city: city.trim(),
       country: country.trim(),
       nationality: nationality.trim(),
       phone: phone.trim(),
       mail: mail.trim().toLowerCase(),
-      iban: iban.trim().replace(/\s/g, ""), // Remove spaces from IBAN
-      onBehalfOf: onBehalfOf ? onBehalfOf.trim() : undefined, // optional
-      tin: tin ? tin.trim() : undefined, // optional
-      idType: idType ? idType.trim() : undefined, // optional
-      idNumber: idNumber ? idNumber.trim() : undefined, // optional
+      iban: String(iban).trim().replace(/\s/g, ""),
+      onBehalfOf: onBehalfOf ? String(onBehalfOf).trim() : undefined,
+      tin: tin ? String(tin).trim() : undefined,
+      idType: idType ? String(idType).trim() : undefined,
+      idNumber: idNumber ? String(idNumber).trim() : undefined,
       dateOfBirth: dateOfBirth.trim(),
-      initialDeposit: deposit, // Already validated as a number
+      initialDeposit: deposit,
     };
 
-    // Save to MongoDB (uncomment when ready to use)
-    // const newParticipant = new Participate(sanitizedData);
-    // await newParticipant.save();
+    console.log("[participate] input ok. sending email via sendMail/participateForm.js", {
+      toEnv: process.env.EDGE_FUND_PARTICIPATE_RECIPIENTS || "(not set)",
+      fromEnv: process.env.ZOHO_FROM_ADDRESS || "(not set)"
+    });
 
-    // Send email with all fields
-    await sendParticipateEmail(sanitizedData);
-    return res.status(201).json({ message: "Form submitted successfully" });
+    // 🚫 We only pass sanitized to the email-template helper; it, in turn,
+    // calls mailer -> zohoClient which builds the minimal Zoho payload.
+    const result = await sendParticipateEmail(sanitized);
+
+    console.log("[participate] email sent in %dms", Date.now() - t0);
+    return res.status(201).json({ message: "Form submitted successfully", mail: { status: result?.status } });
   } catch (error) {
-    console.error("Error submitting participation form:", error);
-    return res.status(500).json({ error: "Internal server error. Please try again later." });
+    console.error("[participate] FAILED", {
+      msg: error.message,
+      zoho: error.response?.data,
+      stack: error.stack?.split("\n").slice(0, 3).join(" | ")
+    });
+    return res.status(500).json({
+      error: "Internal server error. Please try again later.",
+      details: error.response?.data || null
+    });
   }
 };
 
